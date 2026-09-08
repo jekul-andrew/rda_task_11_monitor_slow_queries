@@ -1,8 +1,32 @@
-create database ShopDB; 
+/*
+Slow Query Log Analysis
+=======================
 
+The same SELECT query was executed multiple times against both tables:
+
+SELECT * FROM Products1 WHERE Name = "AwersomeProduct42";
+SELECT * FROM Products2 WHERE Name = "AwersomeProduct42";
+
+Query performance results from mysql-slow.log:
+
++----------------------+------------+------------+------------+
+| Table / Engine       | Min        | Max        | Average    |
++----------------------+------------+------------+------------+
+| Products1 / InnoDB   | 0.247 ms   | 0.330 ms   | 0.287 ms   |
+| Products2 / MyISAM   | 0.383 ms   | 5.941 ms   | 1.035 ms   |
++----------------------+------------+------------+------------+
+
+Based on the slow query log analysis, queries against Products2 (MyISAM)
+were slower on average than queries against Products1 (InnoDB).
+
+According to requirement #6, Products2 was identified as the slower table
+and removed from the final task.sql file.
+
+All DDL and DML statements related to Products2 have been removed.
+*/
+
+create database ShopDB;
 use ShopDB; 
-
--- Create tables 
 
 CREATE TABLE Products1 (
     ID INT AUTO_INCREMENT,
@@ -11,7 +35,6 @@ CREATE TABLE Products1 (
 ) ENGINE=InnoDB;
 
 
--- Create test data in Products1 table 
 INSERT INTO Products1 (Name)
 	VALUES ('AwersomeProduct1'); 
 INSERT INTO Products1 (Name)
